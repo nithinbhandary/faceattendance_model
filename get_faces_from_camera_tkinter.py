@@ -43,8 +43,13 @@ class Face_Register:
         self.input_rollno_int = ""
         self.input_name = tk.Entry(self.frame_right_info)
         self.input_name_char = ""
-        self.input_class = tk.Entry(self.frame_right_info)
-        self.input_class_char = ""
+
+        self.classes = ["1stBCA", "2ndBCA", "3rdBCA", "1stBCOM", "2ndBCOM","3rdBCOM","1stBBA","2ndBBA","3rdBBA"]
+        self.input_class = tk.StringVar(self.frame_right_info)
+        self.input_class.set(self.classes[0])  # Set default value
+
+        
+        
         self.label_warning = tk.Label(self.frame_right_info)
         self.label_face_cnt = tk.Label(self.frame_right_info, text="Faces in current frame: ")
         self.log_all = tk.Label(self.frame_right_info)
@@ -143,7 +148,8 @@ class Face_Register:
         self.input_name.grid(row=8, column=1, sticky=tk.W, padx=0, pady=2)
 
         tk.Label(self.frame_right_info, text="Class: ").grid(row=9, column=0, sticky=tk.W, padx=5, pady=0)
-        self.input_class.grid(row=9, column=1, sticky=tk.W, padx=0, pady=2)
+        tk.OptionMenu(self.frame_right_info, self.input_class, *self.classes).grid(row=9, column=1, sticky=tk.W, padx=0, pady=2)
+
 
         tk.Button(self.frame_right_info,
                   text='Input',
@@ -193,7 +199,7 @@ class Face_Register:
         cursor = conn.cursor() 
         cursor.execute("SELECT * FROM studentdetails WHERE roll_no =%s ", (self.input_rollno_int,))
         existing_entry = cursor.fetchone()
-
+        print(self.input_class)
         if existing_entry:
             print(f"Student for {self.input_rollno_int} already exsists")
         else:
