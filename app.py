@@ -82,7 +82,7 @@ def get_attendance_data():
     total_student = cursor.fetchone()[0]
 
     stcursor = conn.cursor()
-    stcursor.execute("SELECT distinct name, time, date, roll_no, count(name) as attendance FROM attendance group by roll_no")
+    stcursor.execute("SELECT name, roll_no, COUNT(*) AS attendance FROM attendance GROUP BY name, roll_no;")
     all_day = stcursor.fetchall()
 
     cursorcount = conn.cursor()
@@ -99,7 +99,7 @@ def get_attendance_data():
         'absent': absent_count
     }
 
-    student_attendance = pd.DataFrame(all_day, columns=['name', 'time', 'date', 'roll_no', 'attendance']).groupby('name')['attendance'].mean() * 100 / total_att
+    student_attendance = pd.DataFrame(all_day, columns=['name', 'roll_no', 'attendance']).groupby('name')['attendance'].mean() * 100 / total_att
     student_names = student_attendance.index.tolist()
     student_percentages = student_attendance.values.tolist()
 
