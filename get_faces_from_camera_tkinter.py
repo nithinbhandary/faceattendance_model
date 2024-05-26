@@ -43,6 +43,8 @@ class Face_Register:
         self.input_rollno_int = ""
         self.input_name = tk.Entry(self.frame_right_info)
         self.input_name_char = ""
+        self.input_class = tk.Entry(self.frame_right_info)
+        self.input_class_char = ""
         self.label_warning = tk.Label(self.frame_right_info)
         self.label_face_cnt = tk.Label(self.frame_right_info, text="Faces in current frame: ")
         self.log_all = tk.Label(self.frame_right_info)
@@ -94,6 +96,7 @@ class Face_Register:
     def GUI_get_input_name(self):
         self.input_rollno_int = self.input_rollno.get()
         self.input_name_char = self.input_name.get()
+        self.input_class_char = self.input_class.get()
         self.add_to_db()
         self.create_face_folder()
         self.label_cnt_face_in_database['text'] = str(self.existing_faces_cnt)
@@ -139,21 +142,24 @@ class Face_Register:
         tk.Label(self.frame_right_info, text="Name: ").grid(row=8, column=0, sticky=tk.W, padx=5, pady=0)
         self.input_name.grid(row=8, column=1, sticky=tk.W, padx=0, pady=2)
 
+        tk.Label(self.frame_right_info, text="Class: ").grid(row=9, column=0, sticky=tk.W, padx=5, pady=0)
+        self.input_class.grid(row=9, column=1, sticky=tk.W, padx=0, pady=2)
+
         tk.Button(self.frame_right_info,
                   text='Input',
-                  command=self.GUI_get_input_name).grid(row=8, column=2, padx=5)
+                  command=self.GUI_get_input_name).grid(row=10, column=2, padx=5)
 
         # Step 3: Save current face in frame
         tk.Label(self.frame_right_info,
                  font=self.font_step_title,
-                 text="Step 2: Save face image").grid(row=9, column=0, columnspan=2, sticky=tk.W, padx=5, pady=20)
+                 text="Step 2: Save face image").grid(row=10, column=0, columnspan=2, sticky=tk.W, padx=5, pady=20)
 
         tk.Button(self.frame_right_info,
                   text='Save current face',
-                  command=self.save_current_face).grid(row=10, column=0, columnspan=3, sticky=tk.W)
+                  command=self.save_current_face).grid(row=11, column=0, columnspan=3, sticky=tk.W)
 
         # Show log in GUI
-        self.log_all.grid(row=11, column=0, columnspan=20, sticky=tk.W, padx=5, pady=20)
+        self.log_all.grid(row=12, column=0, columnspan=20, sticky=tk.W, padx=5, pady=20)
 
         self.frame_right_info.pack()
 
@@ -191,7 +197,7 @@ class Face_Register:
         if existing_entry:
             print(f"Student for {self.input_rollno_int} already exsists")
         else:
-            cursor.execute("INSERT INTO studentdetails (name,roll_no) VALUES (%s, %s)", (self.input_name_char, self.input_rollno_int))
+            cursor.execute("INSERT INTO studentdetails (name,roll_no,class) VALUES (%s, %s,%s)", (self.input_name_char, self.input_rollno_int,self.input_class_char))
             conn.commit()
         conn.close()
 
