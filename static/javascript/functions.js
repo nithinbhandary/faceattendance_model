@@ -31,7 +31,7 @@ function backhome() {
 }
     
 function delete_student(){
-        window.location.href = "/add_student";
+        window.location.href = "/search_rollno";
 }
     
 // function delete_student(this,rollno,name){
